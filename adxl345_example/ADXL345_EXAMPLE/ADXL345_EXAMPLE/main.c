@@ -27,6 +27,7 @@
 
 #include <atmel_start.h>
 #include <stdio.h>
+#include <string.h>
 #include "adxl345.h"
 #include "adxl345_asf4_i2c.h"
 #include "adxl345_err.h"
@@ -34,14 +35,15 @@
 // =============================================================================
 // local types and definitions
 
+// character sequence to home cursor and clear to end of screen
+// (not currently used)
+#define CLEAR_SCREEN "\e[1;1H\e[2J"
+
 // =============================================================================
 // local (forward) declarations
 
 // =============================================================================
 // local storage
-
-static uint32_t s_sample_count;
-static uint8_t s_high_water;
 
 // =============================================================================
 // public code
@@ -53,6 +55,8 @@ int main(void) {
   adxl345_t adxl345;          // the ADXL345 object
   adxl345_dev_t adxl345_dev;  // the ADXL345 device interface
   adxl345_err_t err;
+  uint32_t sample_count;
+  uint8_t high_water;
 
   /* Initializes MCU, drivers and middleware */
   atmel_start_init();
@@ -72,7 +76,7 @@ int main(void) {
   err = adxl345_reset(&adxl345);
   ASSERT(err == ADXL345_ERR_NONE);
 
-  // Configure ADXL345 sampling rate to 100 Hz
+  // Configure ADXL345 sampling rate
   err = adxl345_set_bw_rate_reg(&adxl345, ADXL345_RATE_100);
   ASSERT(err == ADXL345_ERR_NONE);
 
@@ -80,8 +84,8 @@ int main(void) {
   err = adxl345_set_fifo_ctl_reg(&adxl345, ADXL345_FIFO_MODE_ENABLE | 1);
   ASSERT(err == ADXL345_ERR_NONE);
 
-  s_high_water = 0;
-  s_sample_count = 0;
+  high_water = 0;
+  sample_count = 0;
 
   printf("high water, sample count, x, y, z\r\n");
 
@@ -98,16 +102,19 @@ int main(void) {
     ASSERT(err == ADXL345_ERR_NONE);
 
     // track the high water mark
-    if (available > s_high_water) s_high_water = available;
+    if (available > high_water) high_water = available;
 
     for (int i = 0; i < available; i++) {
       // Fetch X, Y, Z sample in floating point format
       err = adxl345_get_isample(&adxl345, &sample);
       ASSERT(err == ADXL345_ERR_NONE);
 
-      s_sample_count += 1;
-      printf("%2d, %5ld, %4d, %4d, %4d\r", s_high_water, s_sample_count, sample.x,
-             sample.y, sample.z);
+      sample_count += 1;
+      printf("%2d, %5ld, %4d, %4d, %4d\r", high_water, sample_count,
+             sample.x, sample.y, sample.z);
     }
   }
 }
+
+// =============================================================================
+// private (local) code
