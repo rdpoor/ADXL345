@@ -44,6 +44,7 @@ typedef enum {
   ADXL345_ERR_READ,      ///< error during read operation
   ADXL345_ERR_WRITE,     ///< error during write operation
   ADXL354_ERR_INIT,      ///< error during initialization
+  ADXL345_ERR_VERIFY,    ///< value read did not equal written value
 } adxl345_err_t;
 
 // =============================================================================

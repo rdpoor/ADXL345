@@ -33,45 +33,45 @@ extern "C" {
 // =============================================================================
 // includes
 
-#include "adxl345_dev.h"
-#include "adxl345_err.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include "adxl345_dev.h"
+#include "adxl345_err.h"
 
 // =============================================================================
 // types and definitions
 
 typedef enum {
-  ADXL345_REG_DEVID = 0,       ///< 0x00 00 R   11100101 Device ID
-  ADXL345_REG_THRESH_TAP = 29, ///< 0x1D 29 R/W 00000000 Tap threshold
-  ADXL345_REG_OFSX,            ///< 0x1E 30 R/W 00000000 X-axis offset
-  ADXL345_REG_OFSY,            ///< 0x1F 31 R/W 00000000 Y-axis offset
-  ADXL345_REG_OFSZ,            ///< 0x20 32 R/W 00000000 Z-axis offset
-  ADXL345_REG_DUR,             ///< 0x21 33 R/W 00000000 Tap duration
-  ADXL345_REG_LATENT,          ///< 0x22 34 R/W 00000000 Tap latency
-  ADXL345_REG_WINDOW,          ///< 0x23 35 R/W 00000000 Tap window
-  ADXL345_REG_THRESH_ACT,      ///< 0x24 36 R/W 00000000 Activity threshold
-  ADXL345_REG_THRESH_INACT,    ///< 0x25 37 R/W 00000000 Inactivity threshold
-  ADXL345_REG_TIME_INACT,      ///< 0x26 38 R/W 00000000 Inactivity time
-  ADXL345_REG_ACT_INACT_CTL,   ///< 0x27 39 R/W 00000000 Activity control
-  ADXL345_REG_THRESH_FF,       ///< 0x28 40 R/W 00000000 Free-fall threshold
-  ADXL345_REG_TIME_FF,         ///< 0x29 41 R/W 00000000 Free-fall time
-  ADXL345_REG_TAP_AXES,        ///< 0x2A 42 R/W 00000000 Axis control for tap
-  ADXL345_REG_ACT_TAP_STATUS,  ///< 0x2B 43 R   00000000 Source of tap
-  ADXL345_REG_BW_RATE,         ///< 0x2C 44 R/W 00001010 Data rate and power control
-  ADXL345_REG_POWER_CTL,       ///< 0x2D 45 R/W 00000000 Power-saving features
-  ADXL345_REG_INT_ENABLE,      ///< 0x2E 46 R/W 00000000 Interrupt enable control
-  ADXL345_REG_INT_MAP,         ///< 0x2F 47 R/W 00000000 Interrupt mapping control
-  ADXL345_REG_INT_SOURCE,      ///< 0x30 48 R   00000010 Source of interrupts
-  ADXL345_REG_DATA_FORMAT,     ///< 0x31 49 R/W 00000000 Data format control
-  ADXL345_REG_DATAX0,          ///< 0x32 50 R   00000000 X-Axis Data 0
-  ADXL345_REG_DATAX1,          ///< 0x33 51 R   00000000 X-Axis Data 1
-  ADXL345_REG_DATAY0,          ///< 0x34 52 R   00000000 Y-Axis Data 0
-  ADXL345_REG_DATAY1,          ///< 0x35 53 R   00000000 Y-Axis Data 1
-  ADXL345_REG_DATAZ0,          ///< 0x36 54 R   00000000 Z-Axis Data 0
-  ADXL345_REG_DATAZ1,          ///< 0x37 55 R   00000000 Z-Axis Data 1
-  ADXL345_REG_FIFO_CTL,        ///< 0x38 56 R/W 00000000 FIFO control
-  ADXL345_REG_FIFO_STATUS      ///< 0x39 57 R   00000000 FIFO status
+  ADXL345_REG_DEVID = 0,        ///< 0x00 00 R   11100101 Device ID
+  ADXL345_REG_THRESH_TAP = 29,  ///< 0x1D 29 R/W 00000000 Tap threshold
+  ADXL345_REG_OFSX,             ///< 0x1E 30 R/W 00000000 X-axis offset
+  ADXL345_REG_OFSY,             ///< 0x1F 31 R/W 00000000 Y-axis offset
+  ADXL345_REG_OFSZ,             ///< 0x20 32 R/W 00000000 Z-axis offset
+  ADXL345_REG_DUR,              ///< 0x21 33 R/W 00000000 Tap duration
+  ADXL345_REG_LATENT,           ///< 0x22 34 R/W 00000000 Tap latency
+  ADXL345_REG_WINDOW,           ///< 0x23 35 R/W 00000000 Tap window
+  ADXL345_REG_THRESH_ACT,       ///< 0x24 36 R/W 00000000 Activity threshold
+  ADXL345_REG_THRESH_INACT,     ///< 0x25 37 R/W 00000000 Inactivity threshold
+  ADXL345_REG_TIME_INACT,       ///< 0x26 38 R/W 00000000 Inactivity time
+  ADXL345_REG_ACT_INACT_CTL,    ///< 0x27 39 R/W 00000000 Activity control
+  ADXL345_REG_THRESH_FF,        ///< 0x28 40 R/W 00000000 Free-fall threshold
+  ADXL345_REG_TIME_FF,          ///< 0x29 41 R/W 00000000 Free-fall time
+  ADXL345_REG_TAP_AXES,         ///< 0x2A 42 R/W 00000000 Axis control for tap
+  ADXL345_REG_ACT_TAP_STATUS,   ///< 0x2B 43 R   00000000 Source of tap
+  ADXL345_REG_BW_RATE,     ///< 0x2C 44 R/W 00001010 Data rate and power control
+  ADXL345_REG_POWER_CTL,   ///< 0x2D 45 R/W 00000000 Power-saving features
+  ADXL345_REG_INT_ENABLE,  ///< 0x2E 46 R/W 00000000 Interrupt enable control
+  ADXL345_REG_INT_MAP,     ///< 0x2F 47 R/W 00000000 Interrupt mapping control
+  ADXL345_REG_INT_SOURCE,  ///< 0x30 48 R   00000010 Source of interrupts
+  ADXL345_REG_DATA_FORMAT,  ///< 0x31 49 R/W 00000000 Data format control
+  ADXL345_REG_DATAX0,       ///< 0x32 50 R   00000000 X-Axis Data 0
+  ADXL345_REG_DATAX1,       ///< 0x33 51 R   00000000 X-Axis Data 1
+  ADXL345_REG_DATAY0,       ///< 0x34 52 R   00000000 Y-Axis Data 0
+  ADXL345_REG_DATAY1,       ///< 0x35 53 R   00000000 Y-Axis Data 1
+  ADXL345_REG_DATAZ0,       ///< 0x36 54 R   00000000 Z-Axis Data 0
+  ADXL345_REG_DATAZ1,       ///< 0x37 55 R   00000000 Z-Axis Data 1
+  ADXL345_REG_FIFO_CTL,     ///< 0x38 56 R/W 00000000 FIFO control
+  ADXL345_REG_FIFO_STATUS   ///< 0x39 57 R   00000000 FIFO status
 } adxl345_register_t;
 
 /** Fixed device identifier */
@@ -106,11 +106,11 @@ typedef enum {
 
 typedef enum {
   ADXL345_ACT_AC_ENABLE = 0x80,  ///< Enable AC coupling for activity detection
-  ADXL345_ACT_X_ENABLE = 0x40,     ///< Enable X axis for activity detection
-  ADXL345_ACT_Y_ENABLE = 0x20,     ///< Enable Y axis for activity detection
-  ADXL345_ACT_Z_ENABLE = 0x10,     ///< Enable Z axis for activity detection
+  ADXL345_ACT_X_ENABLE = 0x40,   ///< Enable X axis for activity detection
+  ADXL345_ACT_Y_ENABLE = 0x20,   ///< Enable Y axis for activity detection
+  ADXL345_ACT_Z_ENABLE = 0x10,   ///< Enable Z axis for activity detection
   ADXL345_INACT_AC_ENABLE = 0x08,  ///< Enable AC coupling for inactivity
-                                 ///< detect.
+                                   ///< detect.
   ADXL345_INACT_X_ENABLE = 0x04,   ///< Enable X axis for inactivity detection
   ADXL345_INACT_Y_ENABLE = 0x01,   ///< Enable Y axis for inactivity detection
   ADXL345_INACT_Z_ENABLE = 0x01,   ///< Enable Z axis for inactivity detection
@@ -185,12 +185,12 @@ typedef enum {
 } adxl345_data_format_reg;
 
 typedef struct {
-  uint8_t x0; ///<
-  uint8_t x1; ///<
-  uint8_t y0; ///<
-  uint8_t y1; ///<
-  uint8_t z0; ///<
-  uint8_t z1; ///<
+  uint8_t x0;  ///<
+  uint8_t x1;  ///<
+  uint8_t y0;  ///<
+  uint8_t y1;  ///<
+  uint8_t z0;  ///<
+  uint8_t z1;  ///<
 } adxl345_data_regs_t;
 
 typedef enum {
@@ -208,9 +208,9 @@ typedef enum {
 } adxl345_fifo_status_reg;
 
 typedef struct {
-  int16_t x; ///< X acceleration in unspecified units
-  int16_t y; ///< Y acceleration in unspecified units
-  int16_t z; ///< Z acceleration in unspecified units
+  int16_t x;  ///< X acceleration in unspecified units
+  int16_t y;  ///< Y acceleration in unspecified units
+  int16_t z;  ///< Z acceleration in unspecified units
 } adxl345_isample_t;
 
 typedef struct {
@@ -228,8 +228,22 @@ typedef struct {
 
 /**
  * @brief initialize the adxl345 module.
+ *
+ * This function probes the ADXL345 device ID register and will return an error
+ * code unless the returned value matches the expected value of 0xE5.
  */
-adxl345_err_t adxl345_init(adxl345_t *adxl345, adxl345_dev_t * dev);
+adxl345_err_t adxl345_init(adxl345_t *adxl345, adxl345_dev_t *dev);
+
+/**
+ * @brief Make best effort to reset the ADXL345 to its default (reset) state.
+ */
+adxl345_err_t adxl345_reset(adxl345_t *adxl345);
+
+/**
+ * @brief Write a value to an ADXL345 register and optionally verify via read.
+ */
+adxl345_err_t adxl345_write_reg(adxl345_t *adxl345, uint8_t reg_id, uint8_t val,
+                                bool verify);
 
 // ==========================================
 // low-level register access
@@ -266,8 +280,10 @@ adxl345_err_t adxl345_set_thresh_inact_reg(adxl345_t *adxl345, uint8_t val);
 adxl345_err_t adxl345_get_time_inact_reg(adxl345_t *adxl345, uint8_t *val);
 adxl345_err_t adxl345_set_time_inact_reg(adxl345_t *adxl345, uint8_t val);
 
-adxl345_err_t adxl345_get_act_inact_ctl_reg(adxl345_t *adxl345, adxl345_act_inact_ctl_reg *val);
-adxl345_err_t adxl345_set_act_inact_ctl_reg(adxl345_t *adxl345, adxl345_act_inact_ctl_reg val);
+adxl345_err_t adxl345_get_act_inact_ctl_reg(adxl345_t *adxl345,
+                                            adxl345_act_inact_ctl_reg *val);
+adxl345_err_t adxl345_set_act_inact_ctl_reg(adxl345_t *adxl345,
+                                            adxl345_act_inact_ctl_reg val);
 
 adxl345_err_t adxl345_get_thresh_ff_reg(adxl345_t *adxl345, uint8_t *val);
 adxl345_err_t adxl345_set_thresh_ff_reg(adxl345_t *adxl345, uint8_t val);
@@ -275,27 +291,40 @@ adxl345_err_t adxl345_set_thresh_ff_reg(adxl345_t *adxl345, uint8_t val);
 adxl345_err_t adxl345_get_time_ff_reg(adxl345_t *adxl345, uint8_t *val);
 adxl345_err_t adxl345_set_time_ff_reg(adxl345_t *adxl345, uint8_t val);
 
-adxl345_err_t adxl345_get_tap_axes_reg(adxl345_t *adxl345, adxl345_tap_axes_reg *val);
-adxl345_err_t adxl345_set_tap_axes_reg(adxl345_t *adxl345, adxl345_tap_axes_reg val);
+adxl345_err_t adxl345_get_tap_axes_reg(adxl345_t *adxl345,
+                                       adxl345_tap_axes_reg *val);
+adxl345_err_t adxl345_set_tap_axes_reg(adxl345_t *adxl345,
+                                       adxl345_tap_axes_reg val);
 
-adxl345_err_t adxl345_get_bw_rate_reg(adxl345_t *adxl345, adxl345_bw_rate_reg *val);
-adxl345_err_t adxl345_set_bw_rate_reg(adxl345_t *adxl345, adxl345_bw_rate_reg val);
+adxl345_err_t adxl345_get_bw_rate_reg(adxl345_t *adxl345,
+                                      adxl345_bw_rate_reg *val);
+adxl345_err_t adxl345_set_bw_rate_reg(adxl345_t *adxl345,
+                                      adxl345_bw_rate_reg val);
 
-adxl345_err_t adxl345_get_power_ctl_reg(adxl345_t *adxl345, adxl345_power_ctl_reg *val);
-adxl345_err_t adxl345_set_power_ctl_reg(adxl345_t *adxl345, adxl345_power_ctl_reg val);
+adxl345_err_t adxl345_get_power_ctl_reg(adxl345_t *adxl345,
+                                        adxl345_power_ctl_reg *val);
+adxl345_err_t adxl345_set_power_ctl_reg(adxl345_t *adxl345,
+                                        adxl345_power_ctl_reg val);
 
-adxl345_err_t adxl345_get_int_enable_reg(adxl345_t *adxl345, adxl345_interrupt_reg *val);
-adxl345_err_t adxl345_set_int_enable_reg(adxl345_t *adxl345, adxl345_interrupt_reg val);
+adxl345_err_t adxl345_get_int_enable_reg(adxl345_t *adxl345,
+                                         adxl345_interrupt_reg *val);
+adxl345_err_t adxl345_set_int_enable_reg(adxl345_t *adxl345,
+                                         adxl345_interrupt_reg val);
 
-adxl345_err_t adxl345_get_int_map_reg(adxl345_t *adxl345, adxl345_interrupt_reg *val);
-adxl345_err_t adxl345_set_int_map_reg(adxl345_t *adxl345, adxl345_interrupt_reg val);
+adxl345_err_t adxl345_get_int_map_reg(adxl345_t *adxl345,
+                                      adxl345_interrupt_reg *val);
+adxl345_err_t adxl345_set_int_map_reg(adxl345_t *adxl345,
+                                      adxl345_interrupt_reg val);
 
-adxl345_err_t adxl345_get_int_source_reg(adxl345_t *adxl345, adxl345_interrupt_reg *val);
+adxl345_err_t adxl345_get_int_source_reg(adxl345_t *adxl345,
+                                         adxl345_interrupt_reg *val);
 
-adxl345_err_t adxl345_get_data_format_reg(adxl345_t *adxl345, adxl345_data_format_reg *val);
-adxl345_err_t adxl345_set_data_format_reg(adxl345_t *adxl345, adxl345_data_format_reg val);
+adxl345_err_t adxl345_get_data_format_reg(adxl345_t *adxl345,
+                                          adxl345_data_format_reg *val);
+adxl345_err_t adxl345_set_data_format_reg(adxl345_t *adxl345,
+                                          adxl345_data_format_reg val);
 
-// Because x, y, z samples must be read in a multi-register read,
+// Because x, y, z samples must be read in a single operation,
 // these methods are not provided.
 // adxl345_err_t adxl345_get_datax0_reg(adxl345_t *adxl345, uint8_t *val);
 // adxl345_err_t adxl345_get_datax1_reg(adxl345_t *adxl345, uint8_t *val);
@@ -304,24 +333,39 @@ adxl345_err_t adxl345_set_data_format_reg(adxl345_t *adxl345, adxl345_data_forma
 // adxl345_err_t adxl345_get_dataz0_reg(adxl345_t *adxl345, uint8_t *val);
 // adxl345_err_t adxl345_get_dataz1_reg(adxl345_t *adxl345, uint8_t *val);
 
-/** @brief Fetch x, y, z accelerometer data in one operation
+/**
+ * @brief Fetch raw x, y, zregister data in one operation
  */
-adxl345_err_t adxl345_get_data_regs(adxl345_t *adxl345, adxl345_data_regs_t *dst);
+adxl345_err_t adxl345_get_data_regs(adxl345_t *adxl345,
+                                    adxl345_data_regs_t *dst);
 
-adxl345_err_t adxl345_get_fifo_ctl_reg(adxl345_t *adxl345, adxl345_fifo_mode_reg *val);
-adxl345_err_t adxl345_set_fifo_ctl_reg(adxl345_t *adxl345, adxl345_fifo_mode_reg val);
+adxl345_err_t adxl345_get_fifo_ctl_reg(adxl345_t *adxl345,
+                                       adxl345_fifo_mode_reg *val);
+adxl345_err_t adxl345_set_fifo_ctl_reg(adxl345_t *adxl345,
+                                       adxl345_fifo_mode_reg val);
 
-adxl345_err_t adxl345_get_fifo_status_reg(adxl345_t *adxl345, adxl345_fifo_status_reg *val);
+adxl345_err_t adxl345_get_fifo_status_reg(adxl345_t *adxl345,
+                                          adxl345_fifo_status_reg *val);
 
 // ==========================================
 // higher level functions.  In the functions below,
 // _g stands for gravity and _s stands for seconds.
 
-/** @brief Enter measurement mode: start measuring */
+/**
+ * @brief Enter measurement mode: start measuring
+ */
 adxl345_err_t adxl345_start(adxl345_t *adxl345);
 
-/** @brief Enter standby mode: stop measuring */
+/**
+ * @brief Enter standby mode: stop measuring
+ */
 adxl345_err_t adxl345_stop(adxl345_t *adxl345);
+
+/**
+ * @brief Indicate if a sample is available.
+ */
+adxl345_err_t adxl345_is_sample_available(adxl345_t *adxl345,
+                                          bool *is_sample_available);
 
 adxl345_err_t adxl345_get_tap_thresh_g(adxl345_t *adxl345, float *val);
 adxl345_err_t adxl345_set_tap_thresh_g(adxl345_t *adxl345, float val);
@@ -361,11 +405,13 @@ adxl345_err_t adxl345_set_time_ff_s(adxl345_t *adxl345, float val);
 
 adxl345_err_t adxl345_available_samples(adxl345_t *adxl345, uint8_t *val);
 
-adxl345_err_t adxl345_get_isample(adxl345_t *adxl345, adxl345_isample_t *sample);
+adxl345_err_t adxl345_get_isample(adxl345_t *adxl345,
+                                  adxl345_isample_t *sample);
 
 /** @brief Read an x, y, z sample frame.
  */
-adxl345_err_t adxl345_get_fsample(adxl345_t *adxl345, adxl345_fsample_t *sample);
+adxl345_err_t adxl345_get_fsample(adxl345_t *adxl345,
+                                  adxl345_fsample_t *sample);
 
 #ifdef __cplusplus
 }
